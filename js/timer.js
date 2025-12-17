@@ -38,7 +38,3 @@ function updateDisplay(ms) {
     `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-if (remainingTime <= 0) {
-  submitQuiz(true);
-}
-
