@@ -17,3 +17,12 @@ fetch(`/.netlify/functions/validateToken?token=${token}`)
   .catch(() => {
     document.body.innerHTML = "Invalid or expired link.";
   });
+.then(data => {
+  sessionStorage.setItem("email", data.email);
+  sessionStorage.setItem("token", token);
+  window.location.href = "/quiz.html";
+});
+
+
+
+
