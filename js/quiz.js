@@ -73,3 +73,27 @@ document.getElementById("next-btn").onclick = () => {
 };
 
 loadQuestion();
+
+async function submitQuiz(auto = false) {
+  const payload = {
+    token: sessionStorage.getItem("token"),
+    answers: userAnswers,
+    antiCheatLog: getAntiCheatLog(),
+    warnings: warningCount,
+    autoSubmitted: auto
+  };
+
+  const res = await fetch("/.netlify/functions/submitQuiz", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    window.location.href = "submitted.html";
+  } else {
+    alert("Submission failed");
+  }
+}
