@@ -76,12 +76,13 @@ loadQuestion();
 
 async function submitQuiz(auto = false) {
   const payload = {
-    token: sessionStorage.getItem("token"),
-    answers: userAnswers,
-    antiCheatLog: getAntiCheatLog(),
-    warnings: warningCount,
-    autoSubmitted: auto
-  };
+  token: sessionStorage.getItem("token"),
+  answers: answers,
+  antiCheatLog: getAntiCheatLog(),
+  warnings: 0,
+  autoSubmitted: auto
+};
+
 
   const res = await fetch("/.netlify/functions/submitQuiz", {
     method: "POST",
@@ -97,6 +98,7 @@ async function submitQuiz(auto = false) {
     alert("Submission failed");
   }
 }
+
 
 
 
