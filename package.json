@@ -1,0 +1,9 @@
+{
+  "name": "quiz-competition",
+  "version": "1.0.0",
+  "description": "Quiz competition site with Netlify Functions",
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^13.0.2"
+  }
+}
