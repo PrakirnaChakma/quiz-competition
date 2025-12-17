@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+console.log("FIREBASE_SERVICE_ACCOUNT:", process.env.FIREBASE_SERVICE_ACCOUNT ? "exists" : "MISSING");
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -43,3 +44,4 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: "Server error" };
   }
 };
+
