@@ -68,8 +68,8 @@ document.getElementById("next-btn").onclick = () => {
     current++;
     loadQuestion();
   } else {
-    alert("Quiz finished (submission next phase)");
-  }
+  submitQuiz(false);
+}
 };
 
 loadQuestion();
@@ -98,3 +98,4 @@ async function submitQuiz(auto = false) {
     alert("Submission failed");
   }
 }
+
