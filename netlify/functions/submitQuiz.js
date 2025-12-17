@@ -8,9 +8,6 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-exports.handler = async (event) => {
-  const { token, answers, antiCheatLog, warnings, autoSubmitted } = JSON.parse(event.body);
-
   if (!token) {
     return { statusCode: 400, body: "No token" };
   }
@@ -36,6 +33,5 @@ exports.handler = async (event) => {
     body: JSON.stringify({ success: true })
   };
 };
-console.log("Received submission:", token);
 
 
