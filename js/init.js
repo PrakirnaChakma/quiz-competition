@@ -14,14 +14,16 @@ fetch(`/.netlify/functions/validateToken?token=${token}`)
     sessionStorage.setItem("email", data.email);
     window.location.href = "/quiz.html";
   })
-  .catch(() => {
-    document.body.innerHTML = "Invalid or expired link.";
-  });
+  .catch(err => {
+  console.error(err);
+  document.body.innerHTML = "Invalid or expired link.";
+});
 .then(data => {
   sessionStorage.setItem("email", data.email);
   sessionStorage.setItem("token", token);
   window.location.href = "/quiz.html";
 });
+
 
 
 
