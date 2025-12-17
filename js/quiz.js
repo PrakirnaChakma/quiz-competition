@@ -12,6 +12,12 @@ function shuffleArray(arr) {
 // ---------- LOAD QUESTIONS ----------
 async function loadQuestionsFromServer() {
   try {
+    // Check if already submitted
+    if (sessionStorage.getItem("quizSubmitted") === "true") {
+      document.body.innerHTML = "<h2>You have already submitted the quiz.</h2>";
+      return;
+    }
+
     const res = await fetch("/.netlify/functions/getQuestions");
     if (!res.ok) throw new Error("Failed to fetch questions");
 
@@ -80,8 +86,14 @@ function renderAllQuestions() {
 
 // ---------- SUBMIT ----------
 async function submitQuiz(auto = false) {
+  const submitBtn = document.querySelector("button[onclick^='submitQuiz']");
+  if (submitBtn) submitBtn.disabled = true;
+
   const confirmSubmit = auto || confirm("Are you sure you want to submit the quiz?");
-  if (!confirmSubmit) return;
+  if (!confirmSubmit) {
+    if (submitBtn) submitBtn.disabled = false;
+    return;
+  }
 
   const payload = {
     token: sessionStorage.getItem("token"),
@@ -90,18 +102,25 @@ async function submitQuiz(auto = false) {
     autoSubmitted: auto
   };
 
-  const res = await fetch("/.netlify/functions/submitQuiz", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const res = await fetch("/.netlify/functions/submitQuiz", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
 
-  const data = await res.json();
-
-  if (data.success) {
-    window.location.href = "submitted.html";
-  } else {
-    alert("Submission failed");
+    if (data.success) {
+      sessionStorage.setItem("quizSubmitted", "true"); // lock quiz
+      window.location.href = "submitted.html";
+    } else {
+      alert("Submission failed");
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Submission failed due to network error");
+    if (submitBtn) submitBtn.disabled = false;
   }
 }
 
