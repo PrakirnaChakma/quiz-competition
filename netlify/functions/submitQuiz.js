@@ -36,3 +36,6 @@ exports.handler = async (event) => {
     body: JSON.stringify({ success: true })
   };
 };
+console.log("Received submission:", token);
+
+
