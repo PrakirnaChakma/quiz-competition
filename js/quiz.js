@@ -1,40 +1,35 @@
 let quizData = [];
-let current = 0;
+let currentIndex = 0;
 let answers = {};
 
 async function loadQuestionsFromServer() {
   try {
+    console.log("Loading questions from server...");
     const res = await fetch("/.netlify/functions/getQuestions");
+    if (!res.ok) throw new Error("Failed to fetch questions: " + res.status);
     const data = await res.json();
 
-    quizData = data.questions;
+    quizData = data.questions || [];
 
     if (!quizData.length) {
-      document.body.innerHTML = "No questions available.";
+      document.body.innerHTML = "<p>No questions available.</p>";
       return;
     }
 
+    currentIndex = 0;
     loadQuestion();
   } catch (err) {
     console.error("Failed to load questions", err);
-    document.body.innerHTML = "Failed to load quiz.";
+    document.body.innerHTML = "<p>Failed to load quiz. Check console for details.</p>";
   }
 }
 
-// Shuffle helper
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
-}
-
-// Store user answers
-let current = 0;
-let answers = new Array(quizData.length).fill(null);
-
-// Render question
 function loadQuestion() {
-  const q = quizData[current];
+  const q = quizData[currentIndex];
+  if (!q) return;
+
   document.getElementById("question-number").innerText =
-    `Question ${current + 1} of ${quizData.length}`;
+    `Question ${currentIndex + 1} of ${quizData.length}`;
 
   document.getElementById("question-text").innerText = q.question;
 
@@ -49,36 +44,37 @@ function loadQuestion() {
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
-  const shuffledOptions = q.options
-    .map((opt, i) => ({ opt, i }))
-    .sort(() => Math.random() - 0.5);
-
-  shuffledOptions.forEach(({ opt, i }) => {
+  q.options.forEach((opt, i) => {
     const label = document.createElement("label");
+    label.style.display = "block";
+    label.style.margin = "8px 0";
+
     const input = document.createElement("input");
     input.type = "radio";
     input.name = "option";
-    input.checked = answers[current] === i;
+    input.value = i;
+    input.checked = answers[q.id] === i;
     input.onclick = () => {
-  answers[q.id] = i;
-};
-
+      answers[q.id] = i;
+      console.log("Answer set:", q.id, i);
+    };
 
     label.appendChild(input);
-    label.append(" " + opt);
+    label.appendChild(document.createTextNode(" " + opt));
     optionsDiv.appendChild(label);
-    optionsDiv.appendChild(document.createElement("br"));
   });
 }
 
-document.getElementById("next-btn").onclick = () => {
-  if (current < quizData.length - 1) {
-    current++;
+document.getElementById("next-btn").addEventListener("click", () => {
+
+  if (currentIndex < quizData.length - 1) {
+    currentIndex++;
     loadQuestion();
   } else {
-  submitQuiz(false);
-}
-};
+    console.log("All questions answered (or last pressed) - submitting...");
+    submitQuiz(false); 
+  }
+});
 
 loadQuestionsFromServer();
 
@@ -106,6 +102,7 @@ async function submitQuiz(auto = false) {
     alert("Submission failed");
   }
 }
+
 
 
 
