@@ -1,25 +1,30 @@
-const quizData = [
-  {
-    question: "What is the capital of Bangladesh?",
-    image: "",
-    options: ["Dhaka", "Chittagong", "Khulna", "Rajshahi"],
-    correct: 0
-  },
-  {
-    question: "Identify this symbol:",
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/77/Google_Images_2015_logo.svg",
-    options: ["Google", "Facebook", "Twitter", "Microsoft"],
-    correct: 0
+let quizData = [];
+let current = 0;
+let answers = {};
+
+async function loadQuestionsFromServer() {
+  try {
+    const res = await fetch("/.netlify/functions/getQuestions");
+    const data = await res.json();
+
+    quizData = data.questions;
+
+    if (!quizData.length) {
+      document.body.innerHTML = "No questions available.";
+      return;
+    }
+
+    loadQuestion();
+  } catch (err) {
+    console.error("Failed to load questions", err);
+    document.body.innerHTML = "Failed to load quiz.";
   }
-];
+}
 
 // Shuffle helper
 function shuffle(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
-
-// Shuffle questions
-shuffle(quizData);
 
 // Store user answers
 let current = 0;
@@ -54,7 +59,10 @@ function loadQuestion() {
     input.type = "radio";
     input.name = "option";
     input.checked = answers[current] === i;
-    input.onclick = () => answers[current] = i;
+    input.onclick = () => {
+  answers[q.id] = i;
+};
+
 
     label.appendChild(input);
     label.append(" " + opt);
@@ -72,7 +80,7 @@ document.getElementById("next-btn").onclick = () => {
 }
 };
 
-loadQuestion();
+loadQuestionsFromServer();
 
 async function submitQuiz(auto = false) {
   const payload = {
@@ -98,6 +106,7 @@ async function submitQuiz(auto = false) {
     alert("Submission failed");
   }
 }
+
 
 
 
