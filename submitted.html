@@ -1,11 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Submitted</title>
+  <meta charset="UTF-8">
+  <title>Quiz Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#8a2be2">
+  <link href="images/RGHS_Refiners_Logo_favicon.png" rel="shortcut icon" type="image/x-icon"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h2>Quiz submitted successfully.</h2>
-  <p>You may now close this page.</p>
+
+<!-- HEADER -->
+<header class="app-header">
+  <a href="https://tinyurl.com/rghsrefiners" target="_blank" rel="noopener" class="logo">
+    <img src="images/RGHS_Refiners_Logo_Allrounder.png" alt="RGHS Refiners Logo" class="logo-dark">
+    <span>RGHS Refiners</span>
+  </a>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main-wrap">
+  <div class="results-card">
+    <div class="results-top">
+      <div class="checkmark">✓</div>
+      <div>
+        <h2 style="margin: 0;">Quiz Submitted Successfully!</h2>
+        <p style="color: var(--muted-text); margin: 4px 0 0 0; font-size: 0.95rem;">
+          Thank you for completing the quiz
+        </p>
+      </div>
+    </div>
+
+    <div id="score-box" class="score-box">
+      <div id="score" class="score-text">Score: Calculating...</div>
+    </div>
+
+    <div id="result-details" class="result-details">
+      <!-- Results will be loaded here -->
+    </div>
+
+    <hr class="question-divider" style="margin: 30px 0;">
+
+    <section class="result-bottom-notes">
+      <h4>Performance Feedback</h4>
+      <p id="bottom-note">Loading your performance summary...</p>
+    </section>
+  </div>
+</main>
+
+<!-- SCRIPTS -->
+<script src="js/toast.js"></script>
+<script src="js/result.js"></script>
+
 </body>
 </html>
-
