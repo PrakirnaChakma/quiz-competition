@@ -1,32 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Online Quiz</title>
+  <meta charset="UTF-8">
+  <title>Online Quiz - RGHS Refiners</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8a2be2">
+  <link href="images/RGHS_Refiners_Logo_favicon.png" rel="shortcut icon" type="image/x-icon"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/toast.js"></script>
 </head>
 <body>
-  <div id="timer">30:00</div>
 
+<!-- HEADER -->
+<header class="app-header">
+  <a href="https://tinyurl.com/rghsrefiners" target="_blank" rel="noopener" class="logo">
+    <img src="images/RGHS_Refiners_Logo_Allrounder.png" alt="RGHS Refiners Logo">
+    <span>RGHS Refiners</span>
+  </a>
+</header>
+
+<!-- TIMER -->
+<div id="timer">30:00</div>
+
+<!-- PROGRESS -->
+<div id="progress">Answered 0 / 0</div>
+
+<!-- INSTRUCTIONS -->
+<div class="instructions-card">
+  <strong>📋 Instructions:</strong>
+  <ul>
+    <li>নিজের সর্বোচ্চ দিয়ে চেষ্টা করো</li>
+    <li>মোট সময় ৩০ মিনিট</li>
+    <li>এই লিঙ্ক দিয়ে কেবল একবার সাবমিট করা যাবে!</li>
+    <li>পদার্থবিজ্ঞান থেকে ৮ টি, উচ্চতর গনিত থেকে ৮ টি, রসায়ন থকে ৮ টি, জীববিজ্ঞান থেকে ৬ টি করে মোট ৩০ টি প্রশ্ন আছে।</li>
+    <li>প্রতিটি প্রশ্নের মান ১। প্রতিটি প্রশ্ন সেট ভিন্ন</li>
+    <li style="color: deeppink;">⚠সাবধান!⚠ তোমার সবকিছু পর্যবেক্ষণ করা হচ্ছে! কোনো প্রকার কপি, ট্যাব পরিবর্তন, রিফ্রেশ; এমনকি ক্যামেরাও পর্যবেক্ষণ করা হচ্ছে!</li>
+    <li>সময়ের মধ্যে সাবমিট করতে না পারলে অটো-সাবমিট হবে</li>
+  </ul>
+</div>
+
+<!-- MAIN QUIZ -->
+<main class="main-wrap">
   <div id="quiz-container">
-    <img id="question-image" style="display:none; max-width: 300px;">
-    <h3 id="question-text"></h3>
-
-    <div id="options"></div>
+    <!-- Questions will be loaded here -->
   </div>
 
-  <button onclick="submitQuiz(false)">Submit</button>
-  <script src="js/antiCheat.js"></script>
+  <!-- DESKTOP SUBMIT -->
+  <div class="submit-area">
+    <button class="submit-btn original-submit" id="original-submit">
+      Submit Quiz/ সাবমিট কুইজ
+    </button>
+  </div>
+</main>
+
+<!-- FLOATING CONTROLS (MOBILE ONLY) -->
+<div id="floating-controls">
+  <div id="floating-timer">30:00</div>
+  <button id="floating-submit">Submit Quiz</button>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal" class="modal-hidden">
+  <div id="modal-backdrop" class="modal-backdrop"></div>
+  <div class="modal-card">
+    <h3>Submit Quiz?</h3>
+    <p>Are you sure you want to submit? You cannot change your answers after submission.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-confirm">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS - Load in correct order -->
+<!-- Toast is already loaded in <head> -->
+<script src="js/antiCheat.js"></script>
 <script src="js/timer.js"></script>
-<script src="js/submit.js"></script>
 <script src="js/quiz.js"></script>
 
 <script>
-  enforceFullscreen();
-  startTimer();
+  // Initialize after DOM is ready
+  window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing...');
+    
+    // Start anti-cheat (will prompt user to click for fullscreen)
+    if (typeof enforceFullscreen === 'function') {
+      enforceFullscreen();
+    }
+    
+    // Start timer
+    if (typeof startTimer === 'function') {
+      startTimer();
+    }
+  });
 </script>
+
+<!-- Fade out animation for loader -->
+<style>
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+</style>
 
 </body>
 </html>
-
-
-
